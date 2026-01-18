@@ -36,8 +36,6 @@ html, body {
   transform-style: preserve-3d;
   transform: translate(-50%, -50%);
 }
-
-/* CHỮ */
 .text {
   position: absolute;
   color: #ff6fae;
@@ -45,8 +43,6 @@ html, body {
   white-space: nowrap;
   animation: float linear infinite;
 }
-
-/* ẢNH */
 .pic {
   position: absolute;
   border-radius: 14px;
@@ -54,8 +50,6 @@ html, body {
   animation: float linear infinite;
   pointer-events: none;
 }
-
-/* TIM */
 .heart {
   position: absolute;
   color: rgba(255, 77, 148, 0.25);
@@ -132,7 +126,7 @@ setInterval(() => {
 setInterval(() => {
   const h = document.createElement("div");
   h.className = "heart";
-  h.innerText = "💗";
+  h.innerText = "☝️";
   h.style.fontSize = (12 + Math.random() * 18) + "px";
   h.style.left = Math.random() * window.innerWidth + "px";
   h.style.bottom = "-40px";
@@ -169,3 +163,4 @@ document.addEventListener("mousedown", e => {
   drag = true; lx = e.clientX; ly = e.clientY;
 });
 docume
+
