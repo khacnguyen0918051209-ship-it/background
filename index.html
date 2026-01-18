@@ -37,6 +37,7 @@ html, body {
   transform: translate(-50%, -50%);
 }
 
+/* CHỮ */
 .text {
   position: absolute;
   color: #ff6fae;
@@ -45,15 +46,31 @@ html, body {
   animation: float linear infinite;
 }
 
-@keyframes float {
-  from { transform: translate3d(var(--x), var(--y), var(--z)); opacity: 0; }
-  to   { transform: translate3d(var(--x), calc(var(--y) - 420px), var(--z)); opacity: 1; }
+/* ẢNH */
+.pic {
+  position: absolute;
+  border-radius: 14px;
+  box-shadow: 0 0 25px rgba(255, 111, 174, 0.6);
+  animation: float linear infinite;
+  pointer-events: none;
 }
 
+/* TIM */
 .heart {
   position: absolute;
   color: rgba(255, 77, 148, 0.25);
   animation: heart linear infinite;
+}
+
+@keyframes float {
+  from {
+    transform: translate3d(var(--x), var(--y), var(--z));
+    opacity: 0;
+  }
+  to {
+    transform: translate3d(var(--x), calc(var(--y) - 420px), var(--z));
+    opacity: 1;
+  }
 }
 
 @keyframes heart {
@@ -73,11 +90,21 @@ html, body {
 
 <script>
 const wishes = [
-  "Chúc anh chị VK15 luôn đạt được những điều mong muốn",
-  "Ngày càng xinh trai,đẹp gái",
+  "THK16",
+  "On Top ☝️",
   "Luôn hạnh phúc trên con đường đã chọn",
-  "Chúc VK15 một năm mới bình an",
-  "Đầm ấm bên gia đình",
+  "Jet học bá",
+  "Mãi yêu",
+];
+
+const images = [
+  "img/z7444388801066_1ffc0fd3f438827b389d6ef9170d0ef8.jpg",
+  "img/z7444388810219_dafaa5ab16b9ad888800df6e6eb19726.jpg",
+  "img/z7444388819740_c05f0f53e3b788a2e9d72244b59f1a58.jpg",
+  "img/z7444388819740_c05f0f53e3b788a2e9d72244b59f1a58.jpg",
+  "img/z7444388850035_eb5b665a182052717033f0731c64bfcd.jpg",
+  "img/z7444388864157_8fd0cdeb094c74d3861ab97bd7265e81.jpg",
+  "img/z7444388886518_a2748b7abe02d6c616b1ede4e6b34cb1.jpg",
 ];
 
 const world = document.getElementById("world");
@@ -86,13 +113,37 @@ const bg = document.getElementById("bg");
 function textSize() {
   return Math.max(14, Math.min(22, window.innerWidth / 20)) + "px";
 }
-
 setInterval(() => {
   const el = document.createElement("div");
   el.className = "text";
   el.innerText = wishes[Math.floor(Math.random() * wishes.length)];
   el.style.fontSize = textSize();
 
+  spawn(el, 8, 14, 20000);
+}, 300);
+setInterval(() => {
+  const img = document.createElement("img");
+  img.className = "pic";
+  img.src = images[Math.floor(Math.random() * images.length)];
+  img.style.width = (80 + Math.random() * 140) + "px";
+
+  spawn(img, 10, 18, 22000);
+}, 1200);
+setInterval(() => {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.innerText = "💗";
+  h.style.fontSize = (12 + Math.random() * 18) + "px";
+  h.style.left = Math.random() * window.innerWidth + "px";
+  h.style.bottom = "-40px";
+  h.style.animationDuration = (8 + Math.random() * 8) + "s";
+
+  bg.appendChild(h);
+  setTimeout(() => h.remove(), 16000);
+}, 400);
+
+/* HÀM TẠO VẬT THỂ 3D */
+function spawn(el, minTime, maxTime, life) {
   const radius = window.innerWidth / 2 + 120;
   const angle = Math.random() * Math.PI * 2;
   const x = Math.cos(angle) * Math.random() * radius;
@@ -102,24 +153,11 @@ setInterval(() => {
   el.style.setProperty("--x", x + "px");
   el.style.setProperty("--y", y + "px");
   el.style.setProperty("--z", z + "px");
-  el.style.animationDuration = (8 + Math.random() * 6) + "s";
+  el.style.animationDuration = (minTime + Math.random() * (maxTime - minTime)) + "s";
 
   world.appendChild(el);
-  setTimeout(() => el.remove(), 20000);
-}, 300);
-
-setInterval(() => {
-  const h = document.createElement("div");
-  h.className = "heart";
-  h.innerText = "💗";
-  h.style.fontSize = (12 + Math.random() * 18) + "px";
-  h.style.left = Math.random() * window.innerWidth + "px";
-  h.style.bottom = "-40px";
-h.style.animationDuration = (8 + Math.random() * 8) + "s";
-  bg.appendChild(h);
-  setTimeout(() => h.remove(), 16000);
-}, 400);
-
+  setTimeout(() => el.remove(), life);
+}
 let rx = 0, ry = 0, drag = false, lx = 0, ly = 0;
 
 function update() {
@@ -130,27 +168,4 @@ function update() {
 document.addEventListener("mousedown", e => {
   drag = true; lx = e.clientX; ly = e.clientY;
 });
-document.addEventListener("mouseup", () => drag = false);
-document.addEventListener("mousemove", e => {
-  if (!drag) return;
-  ry += (e.clientX - lx) * 0.12;
-  rx -= (e.clientY - ly) * 0.12;
-  lx = e.clientX; ly = e.clientY;
-  update();
-});
-
-document.addEventListener("touchstart", e => {
-  drag = true; lx = e.touches[0].clientX; ly = e.touches[0].clientY;
-});
-document.addEventListener("touchend", () => drag = false);
-document.addEventListener("touchmove", e => {
-  if (!drag) return;
-  ry += (e.touches[0].clientX - lx) * 0.12;
-  rx -= (e.touches[0].clientY - ly) * 0.12;
-  lx = e.touches[0].clientX; ly = e.touches[0].clientY;
-  update();
-});
-</script>
-
-</body>
-</html>
+docume
